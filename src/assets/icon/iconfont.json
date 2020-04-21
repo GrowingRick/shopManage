@@ -1,0 +1,16 @@
+{
+  "id": "1766442",
+  "name": "elementIcon",
+  "font_family": "iconFont",
+  "css_prefix_text": "el-icon-elementIcon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3032218",
+      "name": "闭眼",
+      "font_class": "close-eye",
+      "unicode": "e79c",
+      "unicode_decimal": 59292
+    }
+  ]
+}
