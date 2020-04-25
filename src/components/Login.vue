@@ -1,19 +1,19 @@
 <template>
     <div class="login_box">
         <div class="login_form">
-        <div class="logo"><img src="../assets/ziran.gif" alt=""></div>
+        <div class="logo"><img src="../assets/logo.png" alt=""></div>
         <!-- 登陆表单 -->
         <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules">
             <el-form-item prop="username">
                 <el-input placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="loginForm.username"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input :type="loginForm.inputType" placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="loginForm.password">
+                <el-input :type="loginForm.inputType" placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="loginForm.password" @keyup.enter.native="login">
                     <i :class="loginForm.inputIcon" slot="suffix" @click="showPwd"></i>
                 </el-input>
             </el-form-item>
             <el-form-item class="btns">
-                <el-button type="primary" @click="login">登陆</el-button>
+                <el-button type="primary" @click="login">登录</el-button>
                 <el-button type="info" @click="resitLoginForm">重置</el-button>
             </el-form-item>
         </el-form>
@@ -27,8 +27,8 @@ export default {
     return {
       // 登陆表单数据绑定对象
       loginForm: {
-        username: '',
-        password: '',
+        username: 'admin',
+        password: '123456',
         inputType: 'password',
         inputIcon: 'el-icon-view'
       },
@@ -68,7 +68,6 @@ export default {
               return this.$message({
                 type: 'error',
                 message: '账户或密码错误',
-                offset: 200,
                 showClose: true
               })
             } else {
@@ -108,9 +107,7 @@ export default {
 <style lang="less" scoped>
     .login_box {
         height: 100%;
-        // background-color: #35495E;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
-        background-blend-mode: multiply,multiply;
+        background-image: linear-gradient(25deg, #5ea9c8, #88a9aa, #a3a98c, #b7a96d)
     }
 
     .login_form {
