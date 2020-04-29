@@ -18,7 +18,7 @@
               退出登录
             </el-dropdown-item>
             <el-dropdown-item>
-              更多操作
+              <a href="https://github.com/GrowingRick/shopping/tree/home" target="_blank" style="color: #606266">项目仓库</a>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -95,17 +95,9 @@ export default {
     font-weight: bold;
     margin-left: 20px;
   }
-  i {
-    font-size: 20px;
-  }
-  i:hover {
-    color: aquamarine;
-    cursor: pointer;
-  }
 }
 
 .el-header .acoountInfo {
-  // width: 110px;
   height: 40px;
   position: relative;
   top: 10px;
@@ -120,6 +112,17 @@ export default {
   color: #fff;
   top: -12px;
   left: 8px;
+  span {
+    i {
+      font-size: 14px;
+      position: relative;
+      left: -6px;
+    }
+  }
+  span:hover {
+    color: #A0C6E8;
+     cursor: pointer;
+  }
 }
 
 .el-dropdown-menu {
@@ -140,6 +143,7 @@ export default {
 //  -------侧边样式
 .el-aside {
   background-image: linear-gradient(180deg, #5ea9c8, #88a9aa, #a3a98c, #b7a96d);
+  overflow-x: hidden;
   // height: 100%;
   // overflow-y: auto;
   //     &::-webkit-scrollbar {

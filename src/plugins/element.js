@@ -3,7 +3,8 @@ import
 {
   Button, Form, Calendar, Dropdown, Progress, DropdownMenu, DropdownItem, Badge, FormItem, Input, Message, Container, Header,
   Main, Aside, Submenu, MenuItem, MenuItemGroup, Menu, Col, Breadcrumb, BreadcrumbItem, Card, Row,
-  Table, TableColumn, Pagination
+  Table, TableColumn, Pagination, Switch, Tooltip,
+  MessageBox, Dialog
 } from 'element-ui'
 
 Vue.use(Button)
@@ -32,5 +33,10 @@ Vue.use(Row)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Pagination)
+Vue.use(Switch)
+Vue.use(Tooltip)
+Vue.use(Dialog)
+// Vue.use(MessageBox)
 // 添加了全局方法 $message
 Vue.prototype.$message = Message
+Vue.prototype.$messageBox = MessageBox
