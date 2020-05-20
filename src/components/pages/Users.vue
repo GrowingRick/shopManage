@@ -1,10 +1,8 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <!-- 面包屑 -->
+    <Breadcrumb :breadcrumb-level="breadcrumbLevel" />
+    <!-- 面包屑END -->
     <el-card class="box-card">
       <!-- 搜索与添加区域 -->
       <el-row :gutter="20">
@@ -36,7 +34,7 @@
               <el-button size="mini" type="primary" @click="showEditDialog(scope.row.id)" icon="el-icon-edit"></el-button>
             </el-tooltip>
             <el-tooltip content="分配角色" placement="top" :enterable="false">
-              <el-button size="mini" type="primary" icon="el-icon-setting"></el-button>
+              <el-button size="mini" type="primary" icon="el-icon-setting" @click="assignRole(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top" :enterable="false">
               <el-button size="mini" type="danger" @click="confirmDelete(scope.row)" icon="el-icon-delete"></el-button>
@@ -54,6 +52,7 @@
         :total="totalUsers">
       </el-pagination>
     </el-card>
+
     <!-- 添加用户 对话框 -->
     <el-dialog title="添加用户" :visible.sync="dialogAddFormVisible" @close="addDialogClosed">
       <el-form label-width="50%" label-position="top" size="mini" :model="addForm" :rules="addFormRules" ref="addFormRef">
@@ -75,6 +74,8 @@
         <el-button type="primary" @click="addUser">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 添加用户 对话框END -->
+
     <!-- 点击弹出 修改 对话框 -->
     <el-dialog title="修改用户信息" :visible.sync="dialogEditFormVisible" @close="editDialogClosed">
       <el-form label-width="50%" label-position="top" size="mini" :model="editForm" :rules="editFormRules" ref="editFormRef">
@@ -93,11 +94,39 @@
         <el-button type="primary" @click="confirmEdit">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 点击弹出 修改 对话框END -->
+
+    <!-- 分配角色 -->
+    <el-dialog title="分配角色" :visible.sync="assignRoleFormVisible" @close="assignRoleDialogClosed">
+      <div class="set-roles">
+        <p>当前的用户：{{userInfo.username}}</p>
+        <p>当前的角色：{{userInfo.role_name}}</p>
+        <p>分配新角色：
+          <el-select v-model="newRoleId" placeholder="请选择">
+            <el-option
+              v-for="item in rolesList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="assignRoleFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmAssignRole">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 分配角色END -->
   </div>
 </template>
 
 <script>
+import Breadcrumb from '../Breadcrumb'
 export default {
+  components: {
+    Breadcrumb
+  },
   data () {
     // 定义验证 手机号 规则
     var checkMobile = (rule, value, callback) => {
@@ -110,6 +139,11 @@ export default {
       }
     }
     return {
+      // 定义面包屑内容
+      breadcrumbLevel: {
+        first: '用户管理',
+        second: '用户列表'
+      },
       // 为了获取用户列表定义的参数对象
       queryInfo: {
         query: '', // 查询用户的条件：姓名
@@ -120,6 +154,7 @@ export default {
       totalUsers: 0,
       dialogEditFormVisible: false,
       dialogAddFormVisible: false,
+      assignRoleFormVisible: false,
       // 添加用户的表单数据
       addForm: {
         username: '',
@@ -153,7 +188,11 @@ export default {
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' } // 自定 表单 校验规则义
         ]
-      }
+      },
+      userInfo: {},
+      rolesList: {},
+      // 选择的角色id
+      newRoleId: ''
     }
   },
   created () {
@@ -269,20 +308,44 @@ export default {
       }).catch(() => {
         this.$message.info('取消删除!')
       })
+    },
+
+    // 分配角色
+    async assignRole (user) {
+      this.userInfo = user
+      // 获取角色列表
+      const { data: res } = await this.$axios.get('roles')
+      if (res.meta.status !== 200) return this.$message.error('获取失败！')
+      this.rolesList = res.data
+      this.assignRoleFormVisible = true
+      // console.log(this.rolesList)
+    },
+    // 确认分配角色
+    async confirmAssignRole () {
+      if (!this.newRoleId) {
+        return this.$message.error('请选择要分配的新角色！')
+      }
+      const { data: res } = await this.$axios.put((`users/${this.userInfo.id}/role`), { rid: this.newRoleId })
+      if (res.meta.status !== 200) return
+      this.$message.success('分配新角色成功')
+      this.getUsersList()
+      this.assignRoleFormVisible = false
+    },
+    // 分配角色关闭
+    assignRoleDialogClosed () {
+      this.newRoleId = ''
+      this.userInfo = ''
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.el-breadcrumb {
-  margin-bottom: 20px;
-  font-size: 12px;
-}
-
 .el-table {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
+.set-roles {
+  line-height: 50px;
+}
 </style>

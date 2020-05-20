@@ -41,9 +41,14 @@ const router = new VueRouter({
           }
         },
         {
+          path: '/rights',
+          name: '权限列表',
+          component: () => import('../components/pages/Rights.vue')
+        },
+        {
           path: '/roles',
           name: '角色列表',
-          component: () => import('../components/pages/404.vue')
+          component: () => import('../components/pages/Roles.vue')
         }
       ]
     },

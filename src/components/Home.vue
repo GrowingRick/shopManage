@@ -4,7 +4,7 @@
     <el-header>
       <div class="systemName">
         <i :class="collapseIcon" @click="toggleCollapse"></i>
-        <span><a href="#/welcome">后台管理系统</a></span>
+        <span><a href="#/welcome">某某后台管理系统</a></span>
       </div>
       <div class="acoountInfo">
         <img src="../assets/photo.jpg" alt />
