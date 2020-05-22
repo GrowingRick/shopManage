@@ -14,10 +14,7 @@ const router = new VueRouter({
     {
       path: '/login',
       name: '登录',
-      component: Login,
-      meta: {
-        title: '登录'
-      }
+      component: Login
     },
     {
       path: '/home',
@@ -43,12 +40,40 @@ const router = new VueRouter({
         {
           path: '/rights',
           name: '权限列表',
-          component: () => import('../components/pages/Rights.vue')
+          component: () => import('../components/pages/Rights.vue'),
+          meta: {
+            title: '权限列表'
+          }
         },
         {
           path: '/roles',
           name: '角色列表',
           component: () => import('../components/pages/Roles.vue')
+        },
+        {
+          path: '/reports',
+          name: '数据报表',
+          component: () => import('../components/pages/Report.vue')
+        },
+        {
+          path: '/goods',
+          name: '商品列表',
+          component: () => import('../components/pages/Goods.vue')
+        },
+        {
+          path: '/params',
+          name: '分类参数',
+          component: () => import('../components/pages/Params.vue')
+        },
+        {
+          path: '/categories',
+          name: '商品分类',
+          component: () => import('../components/pages/Categories.vue')
+        },
+        {
+          path: '/orders',
+          name: '订单列表',
+          component: () => import('../components/pages/Orders.vue')
         }
       ]
     },
@@ -62,9 +87,11 @@ const router = new VueRouter({
 // 挂载路由导航守卫
 router.beforeEach((to, from, next) => {
   // 重定义页面标题
-  if (to.meta.title) {
-    document.title = to.meta.title
-  }
+  // if (to.meta.title) {
+  //   document.title = to.meta.title
+  // } else {
+  //   document.title = '某某后台管理系统'
+  // }
   // 用户直接访问登录页面，直接放行
   if (to.path === '/login') return next()
   // 判断是否登陆
